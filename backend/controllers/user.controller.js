@@ -138,7 +138,7 @@ export const updateUser = async(req,res)=>{
             user.username = username || user.username;
             user.profileImg = profileImg || user.profileImg;
             user.coverImg = coverImg || user.coverImg;
-            user = await user.save();
+            await user.save();
             user.password = null;//after saving it so not affect in the database
             res.status(200).json(user);
         }catch(error){
