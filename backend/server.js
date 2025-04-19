@@ -16,7 +16,7 @@ cloudinary.config({
 console.log("MongoDB URI:", process.env.MONGO_URI); // Debugging
 const app = express();
 const PORT = process.env.PORT || 8000; // Ensure a valid port
-app.use(express.json()); //parse req.body
+app.use(express.json({limit:"5mb"})); //parse req.body
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use("/api/auth",authRoutes);
