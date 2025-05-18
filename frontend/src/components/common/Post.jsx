@@ -16,7 +16,7 @@ const Post = ({ post }) => {
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 	const queryClient = useQueryClient();
 	const postOwner = post.user;
-	const isLiked = post.likes.includes(authUser._id);
+	const isLiked = post.likes?.includes(authUser._id);
 
 	const isMyPost = authUser._id === post.user._id;
 
@@ -59,20 +59,11 @@ const Post = ({ post }) => {
 				throw new Error(error);
 			}
 		},
-		onSuccess: (updatedLikes) => {
-			// this is not the best UX, bc it will refetch all posts
-			// queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-			// instead, update the cache directly for that post
-			queryClient.setQueryData(["posts"], (oldData) => {
-				return oldData.map((p) => {
-					if (p._id === post._id) {
-						return { ...p, likes: updatedLikes };
-					}
-					return p;
-				});
-			});
-		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["posts"] }); // or use refetch
+		  },
+		  
+		  
 		onError: (error) => {
 			toast.error(error.message);
 		},
@@ -222,7 +213,7 @@ const Post = ({ post }) => {
 									<button className='outline-none'>close</button>
 								</form>
 							</dialog>
-							<div className='flex gap-1 items-center group cursor-pointer'>
+							<div className='flex gap-1 items-center group cursor-pointer' onClick={() => toast('Repost feature is still in development!')}>
 								<BiRepost className='w-6 h-6  text-slate-500 group-hover:text-green-500' />
 								<span className='text-sm text-slate-500 group-hover:text-green-500'>0</span>
 							</div>
@@ -244,7 +235,7 @@ const Post = ({ post }) => {
 								</span>
 							</div>
 						</div>
-						<div className='flex w-1/3 justify-end gap-2 items-center'>
+						<div className='flex w-1/3 justify-end gap-2 items-center' onClick={() => toast('Bookmark feature is still in development!')}>
 							<FaRegBookmark className='w-4 h-4 text-slate-500 cursor-pointer' />
 						</div>
 					</div>

@@ -220,6 +220,7 @@ export const getMe = async(req,res)=>{
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
+            username: user.username, 
             email: user.email,
             followers: user.followers,
             following: user.following,

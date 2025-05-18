@@ -60,13 +60,17 @@ const Posts = ({ feedType, username, userId }) => {
 			{!isLoading && !isRefetching && posts?.length === 0 && (
 				<p className='text-center my-4'>No posts in this tab. Switch 👻</p>
 			)}
-			{!isLoading && !isRefetching && posts && (
-				<div>
-					{posts.map((post) => (
-						<Post key={post._id} post={post} />
-					))}
-				</div>
-			)}
+			{!isLoading && !isRefetching && (posts ?? []).length === 0 && (
+  <p className='text-center my-4'>No posts in this tab. Switch 👻</p>
+)}
+{!isLoading && !isRefetching && (posts ?? []).length > 0 && (
+  <div>
+    {(posts ?? []).map((post) => (
+      <Post key={post._id} post={post} />
+    ))}
+  </div>
+)}
+
 		</>
 	);
 };
